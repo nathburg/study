@@ -11,19 +11,13 @@ def spy_game(nums):
         if state == 0:
             if x == 0:
                 state = 1
-            else:
-                continue
         elif state == 1:
             if x == 0:
                 state = 2
-            else:
-                continue
         elif state == 2:
             if x == 7:
                 state = 3
                 break
-            else:
-                continue
     if state < 3:
         return False
     else:
