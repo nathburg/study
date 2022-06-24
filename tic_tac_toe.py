@@ -24,14 +24,16 @@ while True:
     free_spots = [0,1,2,3,4,5,6,7,8]
 
     # spots on board
-    db = ["1","2","3","4","5","6","7","8","9"]
+    # use list comprehension
+    db = [str(i) for i in range(1,10)]
 
     # coordinates of spots
     coords = [(0,2),(1,2),(2,2),(0,1),(1,1),(2,1),(0,0),(1,0),(2,0)]
 
     # the board
     board = '_{}_|_{}_|_{}_\n_{}_|_{}_|_{}_\n_{}_|_{}_|_{}_'
-    current_board = board.format(db[0], db[1], db[2], db[3], db[4], db[5], db[6], db[7], db[8])
+    # "unpack" the contents of db as parameters leveraging the variadic nature of `str.format`
+    current_board = board.format(*db)
 
 
     ######## GET READY TO PLAY
@@ -56,7 +58,9 @@ while True:
 
     ######## THE GAME
 
-    while True:
+    playing_game = True
+    # give the while condition a more meaningful name, change it's value instead of breaking
+    while playing_game:
         ## Player 1
         # only proceed if input is usable
         choice = 9
@@ -72,7 +76,7 @@ while True:
         current_board = board.format(db[0], db[1], db[2], db[3], db[4], db[5], db[6], db[7], db[8])
         print(current_board)
 
-         # remove input from free spots    
+        # remove input from free spots    
         free_spots.remove(choice)
         
         # prep for vertical win
@@ -82,7 +86,7 @@ while True:
         # prep for horizontal win
         ywin = False
         y1[coords[choice][1]] += 1
-       
+
         # prep for diagonal win
         diagwin = False
         if coords[choice] in player1diag1:
@@ -101,10 +105,10 @@ while True:
             diagwin = True
         if xwin or ywin or diagwin:
             print("Player 1 wins!")
-            break
+            playing_game = False
         if free_spots == []:
             print("Ert's a tie!")
-            break
+            playing_game = False
 
 
         ## Player 2 goes
@@ -120,7 +124,7 @@ while True:
         db[choice] = players[1]
         current_board = board.format(db[0], db[1], db[2], db[3], db[4], db[5], db[6], db[7], db[8])
         print(current_board)
-         # remove input from correct    
+        # remove input from correct    
         free_spots.remove(choice)
         
         
@@ -153,19 +157,17 @@ while True:
 
         if xwin or ywin or diagwin:
             print("Player 2 wins!")
-            break
+            playing_game = False
 
         if free_spots == []:
             print("Ert's a tie!")
-            break
+            playing_game = False
     
     ######## END OF GAME
     
     cont = input('Wanna keep playin, put Y.').lower()
-    if cont == 'y':
-        continue
-    else:
-        break
+    if cont != 'y':
+        playing_game = False
 
 ######## BYE
 
